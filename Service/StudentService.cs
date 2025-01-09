@@ -31,30 +31,52 @@ public class StudentService : IStudentService
     }
 
     // Öğrenci silme işlemi
-    public bool DeleteStudent(int id)
+public bool DeleteStudent(int id)
+{
+    var student = _context.TableStudents.FirstOrDefault(s => s.Stid == id);
+    if (student != null)
     {
-        var student = _context.TableStudents.FirstOrDefault(s => s.Stid == id);
-        if (student != null)
+        var deletedStudent = new StudentDTO
         {
-            _context.TableStudents.Remove(student);  // Öğrenciyi silme
-            _context.SaveChanges();                  // Değişiklikleri kaydetme
-            return true;
-        }
-        return false;
-    }
+            Stid = student.Stid,
+            Stname = student.Stname,
+            Stlastname = student.Stlastname,
+            Stnumber = student.Stnumber,
+            Stmail = student.Stmail,
+            Stbalance = student.Stbalance ?? 0
+        };
 
-    // Öğrencinin bakiyesini ekleme işlemi
-    public bool AddBalance(int id, decimal amount)
-    {
-        var student = _context.TableStudents.FirstOrDefault(s => s.Stid == id);
-        if (student != null)
-        {
-            student.Stbalance += amount;  // Bakiye ekleme
-            _context.SaveChanges();      // Değişiklikleri kaydetme
-            return true;
-        }
-        return false;
+        _context.TableStudents.Remove(student);  // Öğrenciyi silme
+        _context.SaveChanges();                  // Değişiklikleri kaydetme
+        return true;
     }
+    return false;
+}
+
+// Öğrencinin bakiyesini ekleme işlemi
+public bool AddBalance(int id, decimal amount)
+{
+    var student = _context.TableStudents.FirstOrDefault(s => s.Stid == id);
+    if (student != null)
+    {
+        student.Stbalance += amount;  // Bakiye ekleme
+        _context.SaveChanges();       // Değişiklikleri kaydetme
+
+        // DTO'ya mapleme
+        var updatedStudent = new StudentDTO
+        {
+            Stid = student.Stid,
+            Stname = student.Stname,
+            Stlastname = student.Stlastname,
+            Stnumber = student.Stnumber,
+            Stmail = student.Stmail,
+            Stbalance = student.Stbalance ?? 0
+        };
+
+        return true;
+    }
+    return false;
+}
 
     // Tüm öğrencileri alma işlemi
     public List<StudentDTO> GetAllStudents()
