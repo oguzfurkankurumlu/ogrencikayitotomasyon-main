@@ -1,9 +1,9 @@
-using summerschool.DTO;
-
-public class TeacherDTO
+namespace summerschool.DTO
 {
-    public int Tchrid { get; set; }
-    public string Tchnamelastname { get; set; }
-    public string? TchrbranchName { get; set; }  // Branş adı yerine branş ID'si alırsanız, ilişkiyi çözmek için branch adını alabilirsiniz
+    public class TeacherDTO
+    {
+        public int Tchrid { get; set; }
+        public string Tchnamelastname { get; set; }
+        public int? Tchrbranch { get; set; }
+    }
 }
-

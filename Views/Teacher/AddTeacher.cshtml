@@ -1,0 +1,24 @@
+@model summerschool.DTO.TeacherDTO
+
+@{
+    ViewBag.Title = "Add Teacher";
+}
+
+<h2>Add New Teacher</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Tchnamelastname)
+        @Html.TextBoxFor(model => model.Tchnamelastname, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Tchrbranch)
+        @Html.TextBoxFor(model => model.Tchrbranch, new { @class = "form-control" })
+    </div>
+
+    <button type="submit" class="btn btn-primary">Add Teacher</button>
+}

@@ -1,0 +1,36 @@
+@model IEnumerable<summerschool.DTO.TeacherDTO>
+
+<h1>Öğretmenler</h1>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Ad Soyad</th>
+            <th>Branş ID</th>
+            <th>İşlem</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var teacher in Model)
+        {
+            <tr>
+                <td>@teacher.Tchnamelastname</td>
+                <td>@teacher.Tchrbranch</td>
+                <td>
+                    <!-- Silme İşlemi İçin Form -->
+                    <form method="post" action="@Url.Action("Delete", "Teacher")" style="display:inline;">
+                        <input type="hidden" name="id" value="@teacher.Tchrid" />
+                        <button type="submit" class="btn btn-danger btn-sm">Sil</button>
+                    </form>
+
+                    <!-- Öğretmen Güncelleme İşlemi İçin Bağlantı -->
+                    @Html.ActionLink("Düzenle", "Edit", new { id = teacher.Tchrid }, new { @class = "btn btn-warning btn-sm" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="button-group mt-3 d-flex justify-content-end">
+    <a class="btn btn-primary" href="@Url.Action("AddTeacher", "Teacher")">Yeni Öğretmen Ekle</a>
+</div>

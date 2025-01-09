@@ -8,11 +8,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<UserLoginRepository>();
 builder.Services.AddScoped<LoginService>();
-builder.Services.AddScoped<StudentService>();  // StudentService sınıfını DI container'a ekle
 builder.Services.AddScoped<IStudentService, StudentService>(); // IStudentService ve StudentService'i DI konteynerine ekleyin
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
-builder.Services.AddScoped<IStudentService, StudentService>();
 
+builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();  // TeacherRepository
+builder.Services.AddScoped<ITeacherService, TeacherService>();  // TeacherService
 
 
 
