@@ -1,3 +1,5 @@
+using summerschool.DTO;
+
 public class TeacherDTO
 {
     public int Tchrid { get; set; }

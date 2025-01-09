@@ -11,13 +11,4 @@ namespace summerschool.DTO
         public decimal Stbalance { get; set; }
     }
 
-
-
-    public interface IStudentService
-    {
-        bool AddStudent(StudentDTO newStudent);
-        bool DeleteStudent(int id);
-        bool AddBalance(int id, decimal amount);
-        List<StudentDTO> GetAllStudents();
-    }
 }

@@ -1,19 +1,28 @@
-using summerschool.DMO;
-using summerschool.DTO;
 using System.Collections.Generic;
 using System.Linq;
+using summerschool.DMO;
+using summerschool.DTO;
+
+public interface IStudentService
+{
+    bool AddStudent(StudentDTO newStudent);
+    bool DeleteStudent(int id);
+    bool AddBalance(int id, decimal amount);
+    List<StudentDTO> GetAllStudents();
+}
+
+
+
 
 public class StudentService : IStudentService
 {
-    private readonly SummerSchoolContext _context;
+    private readonly IStudentRepository _studentRepository;
 
-    // Constructor ile SummerSchoolContext enjekte ediliyor
-    public StudentService(SummerSchoolContext context)
+    public StudentService(IStudentRepository studentRepository)
     {
-        _context = context;
+        _studentRepository = studentRepository;
     }
 
-    // Yeni öğrenci ekleme işlemi
     public bool AddStudent(StudentDTO newStudent)
     {
         var student = new TableStudent
@@ -24,73 +33,32 @@ public class StudentService : IStudentService
             Stmail = newStudent.Stmail,
             Stbalance = newStudent.Stbalance
         };
-
-        _context.TableStudents.Add(student);  // Öğrenci ekleme
-        _context.SaveChanges();               // Değişiklikleri kaydetme
-        return true;
+        return _studentRepository.AddStudent(student);
     }
 
-    // Öğrenci silme işlemi
-public bool DeleteStudent(int id)
-{
-    var student = _context.TableStudents.FirstOrDefault(s => s.Stid == id);
-    if (student != null)
+    public bool DeleteStudent(int id)
     {
-        var deletedStudent = new StudentDTO
-        {
-            Stid = student.Stid,
-            Stname = student.Stname,
-            Stlastname = student.Stlastname,
-            Stnumber = student.Stnumber,
-            Stmail = student.Stmail,
-            Stbalance = student.Stbalance ?? 0
-        };
-
-        _context.TableStudents.Remove(student);  // Öğrenciyi silme
-        _context.SaveChanges();                  // Değişiklikleri kaydetme
-        return true;
+        return _studentRepository.DeleteStudent(id);
     }
-    return false;
-}
 
-// Öğrencinin bakiyesini ekleme işlemi
-public bool AddBalance(int id, decimal amount)
-{
-    var student = _context.TableStudents.FirstOrDefault(s => s.Stid == id);
-    if (student != null)
+    public bool AddBalance(int id, decimal amount)
     {
-        student.Stbalance += amount;  // Bakiye ekleme
-        _context.SaveChanges();       // Değişiklikleri kaydetme
-
-        // DTO'ya mapleme
-        var updatedStudent = new StudentDTO
-        {
-            Stid = student.Stid,
-            Stname = student.Stname,
-            Stlastname = student.Stlastname,
-            Stnumber = student.Stnumber,
-            Stmail = student.Stmail,
-            Stbalance = student.Stbalance ?? 0
-        };
-
-        return true;
+        return _studentRepository.AddBalance(id, amount);
     }
-    return false;
-}
 
-    // Tüm öğrencileri alma işlemi
     public List<StudentDTO> GetAllStudents()
     {
-        return _context.TableStudents
-            .Select(s => new StudentDTO
-            {
-                Stid = s.Stid,
-                Stname = s.Stname,
-                Stlastname = s.Stlastname,
-                Stnumber = s.Stnumber,
-                Stmail = s.Stmail,
-                Stbalance = s.Stbalance ?? 0
-            })
-            .ToList();
+        var students = _studentRepository.GetAllStudents();
+        return students.Select(s => new StudentDTO
+        {
+            Stid = s.Stid,
+            Stname = s.Stname,
+            Stlastname = s.Stlastname,
+            Stnumber = s.Stnumber,
+            Stmail = s.Stmail,
+            Stbalance = s.Stbalance ?? 0
+        }).ToList();
     }
 }
+
+

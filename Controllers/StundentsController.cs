@@ -39,9 +39,10 @@ public class StudentsController : Controller
     {
         if (_studentService.DeleteStudent(id)) // Servis katmanında silme işlemi
         {
-            return RedirectToAction("Index");
+            return RedirectToAction("Index"); // Silme sonrası liste sayfasına dön
         }
-        return Json(new { success = false, message = "Öğrenci bulunamadı." });
+        ModelState.AddModelError("", "Öğrenci bulunamadı.");
+        return RedirectToAction("Index"); // Hata durumunda yine Index sayfasına dön
     }
 
     // Öğrenciye bakiye ekleme işlemi
@@ -50,9 +51,10 @@ public class StudentsController : Controller
     {
         if (_studentService.AddBalance(id, amount)) // Servis katmanına delegasyon
         {
-            return RedirectToAction("Index");
+            return RedirectToAction("Index"); // Bakiye ekleme sonrası listeye dön
         }
-        return Json(new { success = false, message = "Öğrenci bulunamadı." });
+        ModelState.AddModelError("", "Öğrenci bulunamadı.");
+        return RedirectToAction("Index"); // Hata durumunda yine Index sayfasına dön
     }
 
     // Öğrenci listesi
